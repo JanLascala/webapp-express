@@ -44,13 +44,13 @@ function show(req, res) {
 
 function storeReview(req, res) {
     const id = req.params.id;
-    const { username, text, vote } = req.body
+    const { name, text, vote } = req.body
 
     const created_at = new Date().toISOString().slice(0, 19).replace('T', ' ');
     const updated_at = created_at
 
     const insertSQL = 'INSERT INTO reviews (movie_id, name, vote, text, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)';
-    const values = [id, username, vote, text, created_at, updated_at];
+    const values = [id, name, vote, text, created_at, updated_at];
 
     connection.query(insertSQL, values, (err, results) => {
         if (err) return res.status(500).json({ error: err.message })
