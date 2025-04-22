@@ -40,8 +40,27 @@ function show(req, res) {
     });
 }
 
+//post 
+
+function storeReview(req, res) {
+    const id = req.params.id;
+    const { username, text, vote } = req.body
+
+    const created_at = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    const Updated_at = created_at
+
+    const insertSQL = 'INSERT INTO reviews (movie_id, name, vote, text, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)';
+    const values = [id, username, vote, text, created_at, updated_at];
+
+    connection.query(insertSQL, values, (err, results) => {
+        if (err) return res.status(500).json({ error: err.message })
+
+        console.log(results);
+        res.status(201).json({ message: 'reviews added!', reviewId: results.insertId })
+    })
 
 
+}
 
 
 
@@ -67,4 +86,5 @@ function show(req, res) {
 module.exports = {
     index,
     show,
+    storeReview,
 }
